@@ -77,4 +77,16 @@ jobs:
           echo "======CI FAILED============"
           echo "======NEMA DEPLOYA===="
           echo "==========================="
+
+    #zavrsna statistika 
+      - name: Završna statistika
+        if: always()
+        run: |
+          echo "==========================="
+          echo "======LARAVEL CI ZAVRSIO==="
+          echo "Repository: ${{ github.repository}}"
+          echo "Branch: ${{ github.ref_name}}"
+          echo "Commiter: ${{ github.actor}}"
+          echo "Commit SHA: ${{ github.workspace}}"
+          echo "Datum: $(date '+%d.%m.%Y %H:%i:%s')"
     
