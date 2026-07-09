@@ -2,7 +2,7 @@ name: Laravel CI process
 
 on:
   push:
-    branches: [main]
+    branches: [main, release-candidate]
 #koraci
 jobs:
   laravel-tests:
@@ -96,6 +96,13 @@ jobs:
         run: |
           echo "Ovaj workfloat se izvršava na main grani"
           echo "Main grana je produkcijska grana"
+
+    #izvrsavanje samo ako se radi o grani release-candidate
+      - name: Release candidate grana
+        if: github.ref == 'refs/heads/release-candidate'
+        run: |
+          echo "Ovaj workfloat se izvršava na release-candidate grani"
+          echo "release-candidate grana je pred produkcijska grana"
 
     #izvrsavanje samo commit poruka sadrzi rijec deploy
       - name: Commit sadrzi rijec deploy
