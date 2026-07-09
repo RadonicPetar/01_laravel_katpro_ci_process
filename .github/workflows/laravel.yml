@@ -40,5 +40,5 @@ jobs:
 
     #provjera laravel verzije
       - name: Verify Laravel application
-        run: php artisan --verison
+        run: php artisan -V
     
