@@ -53,6 +53,6 @@ jobs:
     #dodavanje baze/migracija
       - name: Run Database migrations
         env:
-          DB_CONNECTION: sqlite3
+          DB_CONNECTION: sqlite
           DB_DATABASE: ":memory"
         run: php artisan migrate --force
