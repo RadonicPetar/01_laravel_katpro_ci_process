@@ -60,12 +60,21 @@ jobs:
           DB_DATABASE: ":memory:"
         run: php artisan test
     
-    #uvjet za uspješan deploy
+    #uvjet za uspješan build
       - name: Ci uspješan
         if: success()
         run: |
           echo "==========================="
           echo "======CI PASSED============"
           echo "======SPREMNO ZA DEPLOY===="
+          echo "==========================="
+
+    #uvjet za failed build
+      - name: Ci neuspješan
+        if: failure()
+        run: |
+          echo "==========================="
+          echo "======CI FAILED============"
+          echo "======NEMA DEPLOYA===="
           echo "==========================="
     
