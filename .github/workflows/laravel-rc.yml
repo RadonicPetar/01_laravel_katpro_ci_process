@@ -1,8 +1,8 @@
-name: Laravel CI process - main
+name: Laravel CI process - Release Candidate
 
 on:
   push:
-    branches: [main]
+    branches: [release-candidate]
 #koraci
 jobs:
   laravel-tests:
