@@ -42,8 +42,6 @@ jobs:
       - name: Verify Laravel application
         run: php artisan -V
 
-    
-    
     #popis ruta
       - name: Popis ruta
         run: php artisan route:list
@@ -56,9 +54,18 @@ jobs:
         run: php artisan migrate --force
 
     #dodavanje php unit testova
-    
       - name: Run PHPUnit tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
         run: php artisan test
+    
+    #uvjet za uspješan deploy
+      - name: Ci uspješan
+        if: success()
+        run: |
+          echo "==========================="
+          echo "======CI PASSED============"
+          echo "======SPREMNO ZA DEPLOY===="
+          echo "==========================="
+    
