@@ -37,4 +37,8 @@ jobs:
     #dodavanje build-a za produkciju
       - name: Build Vite assets
         run: npm run build
+
+    #provjera laravel verzije
+      - name: Verify Laravel application
+        run: php artisan --verison
     
