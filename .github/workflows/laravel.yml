@@ -41,4 +41,8 @@ jobs:
     #provjera laravel verzije
       - name: Verify Laravel application
         run: php artisan -V
+
+    #ciscenje laravel cahe-a
+      - name: Clear Laravel optimized cache
+        run: php artisan optimize:clear
     
