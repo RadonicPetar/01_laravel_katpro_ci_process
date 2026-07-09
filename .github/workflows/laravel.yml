@@ -96,4 +96,11 @@ jobs:
         run: |
           echo "Ovaj workfloat se izvršava na main grani"
           echo "Main grana je produkcijska grana"
+
+    #izvrsavanje samo commit poruka sadrzi rijec deploy
+      - name: Commit sadrzi rijec deploy
+        if: contains(github.event.head_commit.message,'deploy')
+        run: |
+          echo "Commit sadrži rijec deploy"
+          echo "Poruka commita: ${{github.event.head_commit.message}}"
     
