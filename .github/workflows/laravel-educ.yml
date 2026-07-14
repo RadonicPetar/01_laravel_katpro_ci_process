@@ -1,0 +1,106 @@
+name: Laravel CI process
+
+on:
+  push:
+    branches: [educ]
+#koraci
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+    #dodavanje php-a
+      - name: Setup php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, dom, fileinfo, sqlite3, pdo_sqlite
+          coverage: none
+
+    #dodavanje composera i laravela
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+    #dodavanje npm paketa
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+    #dodavanje build-a za produkciju
+      - name: Build Vite assets
+        run: npm run build
+
+    #provjera laravel verzije
+      - name: Verify Laravel application
+        run: php artisan -V
+
+    #popis ruta
+      - name: Popis ruta
+        run: php artisan route:list
+
+    #dodavanje baze/migracija
+      - name: Run Database migrations
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan migrate --force
+
+    #dodavanje php unit testova
+      - name: Run PHPUnit tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
+    
+    #uvjet za uspješan build
+      - name: Ci uspješan
+        if: success()
+        run: |
+          echo "==========================="
+          echo "======CI PASSED============"
+          echo "======SPREMNO ZA DEPLOY===="
+          echo "==========================="
+
+    #uvjet za failed build
+      - name: Ci neuspješan
+        if: failure()
+        run: |
+          echo "==========================="
+          echo "======CI FAILED============"
+          echo "======NEMA DEPLOYA===="
+          echo "==========================="
+
+    #zavrsna statistika 
+      - name: Završna statistika
+        if: always()
+        run: |
+          echo "==========================="
+          echo "======LARAVEL CI ZAVRSIO==="
+          echo "Repository: ${{ github.repository}}"
+          echo "Branch: ${{ github.ref_name}}"
+          echo "Commiter: ${{ github.actor}}"
+          echo "Commit SHA: ${{ github.workspace}}"
+          echo "Datum: $(date '+%d.%m.%Y %H:%M:%S')"
+
+    #izvrsavanje samo ako se radi o grani main
+      - name: Produkcijska grana
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Ovaj workfloat se izvršava na main grani"
+          echo "Main grana je produkcijska grana"
+
+    #izvrsavanje samo commit poruka sadrzi rijec deploy
+      - name: Commit sadrzi rijec deploy
+        if: contains(github.event.head_commit.message,'deploy')
+        run: |
+          echo "Commit sadrži rijec deploy"
+          echo "Poruka commita: ${{github.event.head_commit.message}}"
+    
