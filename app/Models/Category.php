@@ -9,7 +9,14 @@ class Category extends Model
     protected $fillable = [
         'naziv',
         'opis',
+        'active',
     ];
+
+    protected function casts(): array{
+        return[
+            'active'=>'boolean'
+        ];
+    }
 
     public function products()
     {
