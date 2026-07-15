@@ -62,6 +62,14 @@
             <strong>Verzija aplikacije:</strong>
             <span class="font-mono">{{ config('app.version') }}</span>
             &nbsp;|&nbsp;
+
+            <strong>Build:</strong>
+            <span class="font-mono">{{ config('app.build') }}</span>
+            &nbsp;|&nbsp;
+
+            <strong>Commit:</strong>
+            <span class="font-mono">{{ config('app.commit') }}</span>
+            &nbsp;|&nbsp;
         </div>
     </footer>
 </html>

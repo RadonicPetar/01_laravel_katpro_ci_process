@@ -59,6 +59,30 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
         run: php artisan test
+
+    #automatsko dodavanje oznake build-a
+      - name: Geerate build information
+        if : success()
+        run : |
+          echo "APP_BUILD=dev-${{github.run_number}}" >> "$GITHUB_ENV"
+          echo "APP_COMMIT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+
+    #instalacija railway cli
+      - name: Install Railway CLI
+        if : success()
+        run : npm install -g @railway/cli 
+
+    #azuriranje env varijabli u railway dev okolini
+      - name: Update Railway EDUC build number
+        if : success()
+        env :
+          RAILWAY_TOKEN ${{secrets.RAILWAY_TOKEN}}
+        run : |
+          railway variable set \
+            --service "01_laravel_katpro_ci_process" \
+            --environment "dev" \
+            APP_BUILD="$APP_BUILD" \
+            APP_COMMIT="$APP_COMMIT"
     
     #uvjet za uspješan build
       - name: Ci uspješan
