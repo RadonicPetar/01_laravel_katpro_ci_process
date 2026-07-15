@@ -76,7 +76,7 @@ jobs:
       - name: Update Railway EDUC build number
         if : success()
         env :
-          RAILWAY_TOKEN ${{secrets.RAILWAY_TOKEN}}
+          RAILWAY_TOKEN: ${{secrets.RAILWAY_TOKEN}}
         run : |
           railway variable set \
             --service "01_laravel_katpro_ci_process" \
